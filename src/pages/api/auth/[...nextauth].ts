@@ -24,22 +24,24 @@ export const authOptions: NextAuthOptions = {
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
     }),
-    // ...add more providers here
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        name: {
-          label: "Name",
+        email: {
+          label: "Email",
           type: "text",
-          placeholder: "Enter your name",
+          placeholder: "Enter your Email",
         },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials, _req) {
-        const user = { id: 1, name: credentials?.name ?? "J Smith" };
+        console.log("authorize", credentials);
+        const user = { id: 1, name: credentials?.email ?? "J Smith" };
         return user;
       },
     }),
   ],
+  secret: env.NEXTAUTH_SECRET,
 };
 
 export default NextAuth(authOptions);
