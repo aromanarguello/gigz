@@ -1,11 +1,11 @@
-import NextAuth, { type NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
+import NextAuth, { type NextAuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import GoogleProvider from 'next-auth/providers/google';
 
 // Prisma adapter for NextAuth, optional and can be removed
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { prisma } from "../../../server/db/client";
-import { env } from "../../../server/env.mjs";
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import { prisma } from '../../../server/db/client';
+import { env } from '../../../server/env.mjs';
 
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
@@ -25,22 +25,23 @@ export const authOptions: NextAuthOptions = {
       clientSecret: env.GOOGLE_CLIENT_SECRET,
     }),
     CredentialsProvider({
-      name: "Credentials",
+      name: 'Credentials',
       credentials: {
         email: {
-          label: "Email",
-          type: "text",
-          placeholder: "Enter your Email",
+          label: 'Email',
+          type: 'text',
+          placeholder: 'Enter your Email',
         },
-        password: { label: "Password", type: "password" },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, _req) {
-        console.log("authorize", credentials);
-        const user = { id: 1, name: credentials?.email ?? "J Smith" };
+        console.log('authorize', credentials);
+        const user = { id: 1, name: credentials?.email ?? 'J Smith' };
         return user;
       },
     }),
   ],
+
   secret: env.NEXTAUTH_SECRET,
 };
 

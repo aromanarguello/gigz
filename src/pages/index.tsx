@@ -1,7 +1,10 @@
-import type { NextPage } from "next";
-import Head from "next/head";
+import type { NextPage } from 'next';
+import { getSession, useSession } from 'next-auth/react';
+import Head from 'next/head';
 
 const Home: NextPage = () => {
+  const { data: session } = useSession();
+
   return (
     <>
       <Head>
@@ -14,5 +17,13 @@ const Home: NextPage = () => {
     </>
   );
 };
+
+export async function getServerSideProps(context: any) {
+  const { req, res } = context;
+  const session = await getSession({ req });
+  console.log(session);
+
+  return;
+}
 
 export default Home;

@@ -73,7 +73,7 @@ model Gig {
     userId      String
     startDate   DateTime
     endDate     DateTime?
-    isActive    Boolean
+    isActive    Boolean     @default(true)
     createdAt   DateTime    @default(now())
     updatedAt   DateTime    @updatedAt
     type        GigType
