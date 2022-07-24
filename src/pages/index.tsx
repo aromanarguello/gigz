@@ -18,12 +18,12 @@ const Home: NextPage = () => {
   );
 };
 
-export async function getServerSideProps(context: any) {
-  const { req, res } = context;
-  const session = await getSession({ req });
-  console.log(session);
+// export async function getServerSideProps(context: any) {
+//   const { req, res } = context;
+//   const session = await getSession({ req });
+//   console.log(session);
 
-  return;
-}
+//   return;
+// }
 
 export default Home;

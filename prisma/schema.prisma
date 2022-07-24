@@ -71,12 +71,12 @@ model Gig {
     title       String
     description String?
     userId      String
-    startDate   DateTime
+    startDate   DateTime?
     endDate     DateTime?
     isActive    Boolean     @default(true)
     createdAt   DateTime    @default(now())
     updatedAt   DateTime    @updatedAt
-    type        GigType
+    type        GigType?
     user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
     GigContact  GigContact?
     Invoice     Invoice[]
