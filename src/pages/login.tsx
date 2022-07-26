@@ -1,13 +1,16 @@
+import { Spinner } from '@chakra-ui/react';
 import { signIn, signOut, useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 const Login = () => {
   const { data: session } = useSession();
+  const router = useRouter();
 
   if (session) {
+    router.push('/dashboard');
     return (
       <div className="border rounded-md justify-center flex flex-col">
-        <p>Welcome, {session.user?.name}</p>
-        <button onClick={() => signOut()}>Sign out</button>
+        <Spinner />
       </div>
     );
   } else {

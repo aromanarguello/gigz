@@ -3,20 +3,20 @@ import GigTab from './gig';
 
 export const GigPanel = () => {
   return (
-    <div className="border border-gray-300 h-max rounded-lg p-8">
-      <Tabs>
-        <TabList>
-          <Tab>Gigs</Tab>
-          <Tab>Contacts</Tab>
-        </TabList>
-        <Divider />
-        <TabPanels>
+    <Tabs className="border-0 border-b-gray-300">
+      <TabList className="text-sm font-semibold text-gray-500">
+        <Tab>Gigs</Tab>
+        <Tab>Contacts</Tab>
+      </TabList>
+      <Divider />
+      <div className="h-[670px] overflow-y-auto mt-4">
+        <TabPanels className="overflow-y-auto">
           <TabPanel>
             <GigTab />
           </TabPanel>
         </TabPanels>
-      </Tabs>
-    </div>
+      </div>
+    </Tabs>
   );
 };
 
