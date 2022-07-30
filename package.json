@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev:ws": "NODE_ENV=development ts-node-dev --project tsconfig.server.json --respawn --transpile-only src/server/wsServer.ts",
     "dev:next": "next dev",
     "dev": "run-p dev:*",
     "build": "next build",
@@ -38,6 +39,7 @@
     "@types/node": "18.0.0",
     "@types/react": "18.0.14",
     "@types/react-dom": "18.0.5",
+    "@types/ws": "^8.5.3",
     "autoprefixer": "^10.4.7",
     "eslint": "8.18.0",
     "eslint-config-next": "12.2.1",

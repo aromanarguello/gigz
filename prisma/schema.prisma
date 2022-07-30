@@ -56,7 +56,7 @@ model User {
     gigs          Gig[]
     createdAt     DateTime  @default(now())
     updatedAt     DateTime  @updatedAt
-    Invoice       Invoice[]
+    invoices      Invoice[]
 }
 
 enum GigType {
@@ -64,6 +64,28 @@ enum GigType {
     CONTRACT
     TEMPORARY
     FULL_TIME
+    LEAD
+}
+
+enum TimeUnits {
+    MINUTE
+    SECOND
+    HOUR
+    DAY
+}
+
+enum TaskStatus {
+    PENDING
+    IN_PROGRESS
+    COMPLETED
+    CANCELLED
+}
+
+enum InvoiceStatus {
+    PENDING
+    SUBMITTED
+    COMPLETED
+    CANCELLED
 }
 
 model Gig {
@@ -78,8 +100,9 @@ model Gig {
     updatedAt   DateTime    @updatedAt
     type        GigType?
     user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-    GigContact  GigContact?
-    Invoice     Invoice[]
+    gigContact  GigContact?
+    invoices    Invoice[]
+    tasks       GigTasks[]
 }
 
 model GigContact {
@@ -96,24 +119,25 @@ model GigContact {
     gigId      String   @unique
     createdAt  DateTime @default(now())
     updatedAt  DateTime @updatedAt
-    Gig        Gig      @relation(fields: [gigId], references: [id], onDelete: Cascade)
+    gig        Gig      @relation(fields: [gigId], references: [id], onDelete: Cascade)
 }
 
 model Invoice {
-    id             String           @id @default(uuid())
-    title          String
-    description    String?
-    userId         String
-    gigId          String
-    amount         Float
-    currency       String           @default("USD")
-    sentAt         DateTime?
-    createdAt      DateTime         @default(now())
-    updatedAt      DateTime         @updatedAt
-    user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-    gig            Gig?             @relation(fields: [gigId], references: [id], onDelete: Cascade)
-    InvoiceItem    InvoiceItem[]
-    InvoiceExpense InvoiceExpense[]
+    id          String           @id @default(uuid())
+    title       String
+    description String?
+    userId      String
+    gigId       String
+    amount      Float
+    currency    String           @default("USD")
+    sentAt      DateTime?
+    createdAt   DateTime         @default(now())
+    updatedAt   DateTime         @updatedAt
+    user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+    gig         Gig?             @relation(fields: [gigId], references: [id], onDelete: Cascade)
+    items       InvoiceItem[]
+    expenses    InvoiceExpense[]
+    status      InvoiceStatus    @default(PENDING)
 }
 
 model InvoiceItem {
@@ -125,7 +149,7 @@ model InvoiceItem {
     quantity  Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    Invoice   Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+    invoices  Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
 }
 
 model InvoiceExpense {
@@ -135,5 +159,20 @@ model InvoiceExpense {
     amount    Float
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    Invoice   Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+    invoices  Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+}
+
+model GigTasks {
+    id                 String     @id @default(uuid())
+    title              String
+    description        String?
+    createdAt          DateTime   @default(now())
+    updatedAt          DateTime   @updatedAt
+    timeEstimateAmount Int?
+    timeEstimateUnit   TimeUnits?
+    deadline           DateTime?
+    completed          Boolean    @default(false)
+    status             TaskStatus @default(PENDING)
+    gig                Gig?       @relation(fields: [id], references: [id], onDelete: Cascade)
+    gigId              String     @unique
 }

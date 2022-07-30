@@ -12,8 +12,8 @@ const FallbackImage = ({ initials }: { initials: string }) => (
     {initials}
   </div>
 );
-
 export const SidePanel = ({ user }: SidePanelProps) => {
+  const onCreateGig = () => setIsCreateMode((prev) => !prev);
   const [isCreateMode, setIsCreateMode] = useState(false);
   return (
     <div className=" md:w-1/4 md:h-3/4 self-center sm:w-full m-4 flex-col flex items-center p-4">

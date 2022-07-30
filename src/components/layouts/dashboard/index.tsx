@@ -1,7 +1,11 @@
 import { signIn, useSession } from 'next-auth/react';
 import SidePanel from '../../dashboard/sidepanel/sidepanel';
 
-export const DashboardLayout = ({ children }) => {
+export interface DashboardLayoutProps {
+  children: React.ReactNode;
+}
+
+export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const { data: session } = useSession();
 
   if (!session?.user) {

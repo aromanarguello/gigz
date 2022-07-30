@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { trpc } from '../../../../utils/trpc';
 
 const spanBaseStyles = 'text-sm text-gray-400';
@@ -6,6 +7,11 @@ const listItemBaseStyles = 'my-2 font-semibold text-sm';
 
 export const GigTab = () => {
   const { data } = trpc.useQuery(['gig.gigs']);
+  const router = useRouter();
+
+  const handleOpenPage = (id: string) => {
+    router.push(`/dashboard/gig/${id}`);
+  };
 
   return (
     <div className=" w-full flex flex-wrap overflow-y-auto justify-center">
@@ -19,7 +25,7 @@ export const GigTab = () => {
               A
             </div>
             <div className="flex items-start p-4 border-r-gray-300 flex-col justify-center">
-              <p className="text-gray-600 font-semibold">{gig.title}</p>
+              <p className="text-gray-600 font-semibold">{gig.title || 'Untitled'}</p>
               <p className="mt-4 text-xs font-semibold text-gray-400">{gig.type?.toLocaleLowerCase()}</p>
             </div>
           </div>
@@ -29,14 +35,17 @@ export const GigTab = () => {
                 Description: <span className={spanBaseStyles}>{gig.description || 'Not added'}</span>
               </li>
               <li className={listItemBaseStyles}>
-                Open Tasks:<span className={spanBaseStyles}> 0</span>
+                Open Tasks: <span className={spanBaseStyles}>{gig.tasks?.length}</span>
               </li>
               <li className={listItemBaseStyles}>
                 Contact: <span className={spanBaseStyles}>aromanarguello@gmail.com</span>
               </li>
             </ul>
             <div className="flex justify-center">
-              <button className="border border-gray-300 my-2 rounded-lg w-24 h-8 text-sm text-gray-400 font-semibold">
+              <button
+                onClick={() => handleOpenPage(gig.id)}
+                className="border border-gray-300 my-2 rounded-lg w-24 h-8 text-sm text-gray-400 font-semibold"
+              >
                 Open
               </button>
             </div>

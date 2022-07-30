@@ -1,8 +1,5 @@
-import { Divider, Tab, TabList, TabPanel, Tabs } from '@chakra-ui/react';
 import { getSession, signIn, useSession } from 'next-auth/react';
-import Gig, { GigPanel } from '../../components/dashboard/tabs';
-
-import SidePanel from '../../components/dashboard/sidepanel/sidepanel';
+import { GigPanel } from '../../components/dashboard/tabs';
 import DashboardLayout from '../../components/layouts/dashboard';
 
 export const Dashboard = () => {
