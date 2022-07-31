@@ -1,21 +1,26 @@
-import { Tabs, TabList, Tab, TabPanel, Divider, TabPanels } from '@chakra-ui/react';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { BriefcaseIcon, InboxIcon } from '@heroicons/react/solid';
+
 import GigTab from './gig';
 
 export const GigPanel = () => {
   return (
-    <Tabs className="border-0 border-b-gray-300">
-      <TabList className="text-sm font-semibold text-gray-500">
-        <Tab>Gigs</Tab>
-        <Tab>Contacts</Tab>
+    <Tabs>
+      <TabList className="text-sm font-semibold text-gray-500 px-4">
+        <Tab>
+          <BriefcaseIcon className="w-4 h-4 mr-2" />
+          Gigs
+        </Tab>
+        <Tab>
+          <InboxIcon className="w-4 h-4 mr-2" />
+          Contacts
+        </Tab>
       </TabList>
-      <Divider />
-      <div className="h-[670px] overflow-y-auto mt-4">
-        <TabPanels className="overflow-y-auto">
-          <TabPanel>
-            <GigTab />
-          </TabPanel>
-        </TabPanels>
-      </div>
+      <TabPanels>
+        <TabPanel>
+          <GigTab />
+        </TabPanel>
+      </TabPanels>
     </Tabs>
   );
 };

@@ -1,5 +1,6 @@
 import { Button } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import BaseButton from '../../../components/buttons/base';
 import DashboardLayout from '../../../components/layouts/dashboard';
 import { trpc } from '../../../utils/trpc';
 
@@ -12,23 +13,12 @@ const GigPage = () => {
 
   return (
     <DashboardLayout>
-      <button onClick={handleBack}>Back</button>
-      <div>{gig?.title}</div>
-      <div>{gig?.description}</div>
-      <div>{gig?.type}</div>
       <div>
-        {gig?.invoices.map((invoice) => (
-          <div key={invoice.id}>
-            <div>{invoice.title}</div>
-          </div>
-        ))}
+        <p className="text-3xl capitalize text-gray-500 font-semibold">{gig?.title}</p>
       </div>
-      <div>
-        {gig?.tasks.map((task) => (
-          <div key={task.id}>
-            <div>{task.title}</div>
-          </div>
-        ))}
+      <div className="h-full border  self-center flex flex-col justify-center">
+        <div className="h-3/4 border border-gray-300 rounded-lg"></div>
+        <BaseButton onClick={handleBack} text="BACK" />
       </div>
     </DashboardLayout>
   );

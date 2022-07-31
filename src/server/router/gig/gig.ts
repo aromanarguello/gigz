@@ -40,7 +40,7 @@ export const gigRouter = createRouter()
           tasks: true,
         },
         orderBy: {
-          startDate: 'asc',
+          createdAt: 'desc',
         },
       });
     },
@@ -79,5 +79,15 @@ export const gigRouter = createRouter()
       }
 
       return gig;
+    },
+  })
+  .query('gig-count', {
+    input: ByIdInputSchema,
+    resolve({ ctx, input }) {
+      return ctx.prisma.gig.count({
+        where: {
+          id: input.id,
+        },
+      });
     },
   });

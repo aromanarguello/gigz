@@ -16,8 +16,8 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
     <div className="w=screen bg-gray-50 h-screen overflow-y-auto">
       <div className="md:mx-auto bg-gray-200 h-full flex flex-col md:flex-row overflow-y-auto">
         <SidePanel user={session.user} />
-        <div className=" md:w-3/4 p-4">
-          <div className="border border-gray-300 h-[800px] rounded-lg p-8 overflow-y-hidden">{children}</div>
+        <div className=" md:w-3/4 ">
+          <div className="border border-gray-300 h-[800px] rounded-lg p-4 overflow-y-hidden">{children}</div>
         </div>
       </div>
     </div>
