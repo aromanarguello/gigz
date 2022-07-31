@@ -21,7 +21,8 @@ export const gigRouter = createRouter()
           description: input.description,
           startDate: input.startDate,
           userId: session.user.id,
-          type: GigType.CONSULTING,
+          logo: input.logoUrl,
+          type: input.type,
         },
       });
 

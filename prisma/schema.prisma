@@ -65,6 +65,7 @@ enum GigType {
     TEMPORARY
     FULL_TIME
     LEAD
+    ADVISOR
 }
 
 enum TimeUnits {
@@ -98,6 +99,7 @@ model Gig {
     isActive    Boolean     @default(true)
     createdAt   DateTime    @default(now())
     updatedAt   DateTime    @updatedAt
+    logo        String?
     type        GigType?
     user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
     gigContact  GigContact?

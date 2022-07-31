@@ -4,7 +4,11 @@ const { env } = require("./src/server/env");
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: [ 'lh3.googleusercontent.com'  ]
+    domains: [
+    'lh3.googleusercontent.com', 
+    `${env.S3_UPLOAD_BUCKET}.s3.amazonaws.com`,
+    `${env.S3_UPLOAD_BUCKET}.s3.${env.S3_UPLOAD_REGION}.amazonaws.com`,  
+    ]
   }
 };
 

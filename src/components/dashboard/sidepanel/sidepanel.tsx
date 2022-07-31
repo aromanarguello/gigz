@@ -17,7 +17,7 @@ const FallbackImage = ({ initials }: { initials: string }) => (
 export const SidePanel = ({ user }: SidePanelProps) => {
   const [isCreateMode, setIsCreateMode] = useState(false);
   return (
-    <div className=" md:w-1/4 md:h-3/4 self-center sm:w-full m-4 flex-col flex items-center p-4">
+    <div className=" md:w-1/6 md:h-3/4 self-center sm:w-1/5 m-4 flex-col flex items-center p-4">
       {user?.image ? (
         <Image
           src={user.image}
@@ -29,13 +29,9 @@ export const SidePanel = ({ user }: SidePanelProps) => {
       ) : (
         <FallbackImage initials="A" />
       )}
-      <div className="flex flex-col w-full text-center mt-8">
+      <div className="flex flex-col w-full text-center my-8">
         <p className="text-sm font-bold text-gray-500 mb-4">{user?.name}</p>
         <p className="text-xs font-semibold text-gray-400">{user?.email}</p>
-      </div>
-      <div className="flex flex-col">
-        <BaseButton text={isCreateMode ? 'Cancel' : 'Create Gig'} onClick={() => setIsCreateMode((prev) => !prev)} />
-        {!isCreateMode ? null : <CreateGigForm />}
       </div>
       <BaseButton text="Sign Out" onClick={() => signOut()} />
     </div>

@@ -1,4 +1,5 @@
 import { SearchIcon, ViewGridIcon, ViewListIcon } from '@heroicons/react/solid';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FormEvent } from 'react';
 import { trpc } from '../../../../utils/trpc';
@@ -25,16 +26,15 @@ export const GigTab = () => {
 
   return (
     <>
-      <div className="w-full grid grid-cols-3 items-center">
-        <div className=" border h-16 flex items-center justify-between">
-          <p className="text-l font-bold text-gray-500">You have {data?.length} gigs</p>
+      <div className="w-full grid md:grid-cols-3 items-center">
+        <div className=" border h-20 flex items-center justify-between">
+          <p className="text-l font-bold text-gray-500 ml-10">You have {data?.length} gigs</p>
           <div className="bg-white rounded-3xl mr-2  h-10 w-24 flex flex-row justify-around items-center text-gray-400 p-2">
             <ViewGridIcon className="w-6 h-6" />
             <ViewListIcon className="w-6 h-6" />
           </div>
         </div>
-
-        <SearchInput onChange={handleOnSearch} placeholder="Search Gigs" />
+        <SearchInput onChange={handleOnSearch} placeholder="Search Gigs" inputStyles="ml-4" />
         <div className="flex space-x-8 text-gray-400 text-sm font-semibold justify-self-center">
           <p>Sort By:</p>
           <ul className="flex space-x-8">
@@ -59,8 +59,8 @@ export const GigTab = () => {
               className="m-4 max-w-sm rounded-lg bg-gray-100 overflow-hidden shadow-lg w-72 h-72 grid grid-rows-[1.5fr_2fr]"
             >
               <div className="grid grid-cols-[1.2fr_2fr] border border-b-gray-300">
-                <div className="h-full w-full border  flex justify-center items-center text-gray-100 border-r-gray-300">
-                  A
+                <div className="w-28 border flex justify-center text-gray-100 border-r-gray-300">
+                  {gig.logo ? <Image src={gig.logo} alt={gig.title} width={112} height={100} /> : null}
                 </div>
                 <div className="flex items-start p-4 border-r-gray-300 flex-col justify-center">
                   <p className="text-gray-600 font-semibold">{gig.title || 'Untitled'}</p>
