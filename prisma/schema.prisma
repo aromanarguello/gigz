@@ -175,6 +175,7 @@ model GigTasks {
     deadline           DateTime?
     completed          Boolean    @default(false)
     status             TaskStatus @default(PENDING)
-    gig                Gig?       @relation(fields: [id], references: [id], onDelete: Cascade)
+    isPriority         Boolean    @default(false)
+    gig                Gig?       @relation(fields: [gigId], references: [id], onDelete: Cascade)
     gigId              String     @unique
 }

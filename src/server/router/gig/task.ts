@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { ByIdInputSchema } from '../../../constants/schemas/shared';
 import { createRouter } from '../context';
 
-const TaskSchema = z.object({
+export const TaskSchema = z.object({
   title: z.string(),
   description: z.string().optional(),
   timeEstimateAmount: z.number().optional(),

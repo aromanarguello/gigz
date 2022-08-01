@@ -1,5 +1,5 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
-import { BriefcaseIcon, InboxIcon } from '@heroicons/react/solid';
+import { BriefcaseIcon, CalendarIcon, InboxIcon } from '@heroicons/react/solid';
 import { useState } from 'react';
 import CreateGigModal from '../../modals/createGig';
 
@@ -18,6 +18,10 @@ export const GigPanel = () => {
             <Tab>
               <BriefcaseIcon className="w-4 h-4 mr-2" />
               Gigs
+            </Tab>
+            <Tab>
+              <CalendarIcon className="w-4 h-4 mr-2" />
+              Calendar
             </Tab>
             <Tab>
               <InboxIcon className="w-4 h-4 mr-2" />

@@ -7,6 +7,7 @@ import { z } from 'zod';
 import Image from 'next/image';
 import { trpc } from '../../../utils/trpc';
 import BaseInput from '../../inputs/baseInput';
+import { GigType } from '@prisma/client';
 
 export const GigSchema = z.object({
   title: z.string(),
@@ -37,7 +38,7 @@ export const CreateGigForm = () => {
     const params = {
       ...data,
       logoUrl: imageUrl,
-      type: 'CONSULTING',
+      type: GigType.CONTRACT,
     };
     createGigMutation(params);
     setImageUrl('');
