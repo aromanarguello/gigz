@@ -4,6 +4,7 @@ import { GigType } from '@prisma/client';
 import { createRouter } from '../context';
 import { ByIdInputSchema } from '../../../constants/schemas/shared';
 import { Events } from '../../../constants/events';
+import { z } from 'zod';
 
 export const gigRouter = createRouter()
   .mutation('create-gig', {
@@ -32,7 +33,18 @@ export const gigRouter = createRouter()
     },
   })
   .query('gigs', {
-    resolve({ ctx }) {
+    input: z.object({
+      orderBy: z.string(),
+    }),
+    resolve({ ctx, input }) {
+      let orderBy = {};
+
+      if (input.orderBy === 'title') {
+        orderBy = { title: 'asc' };
+      } else {
+        orderBy = { createdAt: input.orderBy || 'desc' };
+      }
+
       return ctx.prisma.gig.findMany({
         where: {
           userId: ctx.session?.user?.id,
@@ -40,9 +52,7 @@ export const gigRouter = createRouter()
         include: {
           tasks: true,
         },
-        orderBy: {
-          createdAt: 'desc',
-        },
+        orderBy,
       });
     },
   })

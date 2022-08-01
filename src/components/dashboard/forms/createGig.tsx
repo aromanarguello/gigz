@@ -1,12 +1,12 @@
-import { useForm } from 'react-hook-form';
+import { UploadIcon } from '@heroicons/react/solid';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { trpc } from '../../../utils/trpc';
-import { CreateGigSchema } from '../../../constants/schemas/gig';
-import { z } from 'zod';
-import BaseInput from '../../inputs/baseInput';
-import BaseButton from '../../buttons/base';
-import { ChangeEvent, FormEvent, useState } from 'react';
 import { useS3Upload } from 'next-s3-upload';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import Image from 'next/image';
+import { trpc } from '../../../utils/trpc';
+import BaseInput from '../../inputs/baseInput';
 
 export const GigSchema = z.object({
   title: z.string(),
@@ -20,7 +20,7 @@ type FormData = z.infer<typeof GigSchema>;
 export const CreateGigForm = () => {
   const [imageUrl, setImageUrl] = useState('');
 
-  const { uploadToS3 } = useS3Upload();
+  const { uploadToS3, openFileDialog, FileInput } = useS3Upload();
 
   const {
     register,
@@ -40,11 +40,12 @@ export const CreateGigForm = () => {
       type: 'CONSULTING',
     };
     createGigMutation(params);
+    setImageUrl('');
     reset();
   };
 
   const handleFileChange = async (event: any) => {
-    const { url } = await uploadToS3(event.target.files[0]);
+    const { url } = await uploadToS3(event);
 
     setImageUrl(url);
   };
@@ -75,11 +76,18 @@ export const CreateGigForm = () => {
           hasError={errors.startDate !== undefined}
           valueAsDate
         />
-        <input
-          type="file"
-          onChange={handleFileChange}
-          className="w-32 self-center mt-8 inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-        />
+        <div className="flex justify-center">
+          {imageUrl && <Image src={imageUrl} alt="logo-preview" className="w-32 h-32" width={100} height={100} />}
+          <FileInput onChange={handleFileChange} />
+          <button
+            type="button"
+            onClick={openFileDialog}
+            className="w-32 self-center mt-8 inline-flex items-center justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          >
+            <UploadIcon className="w-4 h-4 mr-2" />
+            Upload
+          </button>
+        </div>
         <button
           type="submit"
           className="w-32 self-center mt-8 inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"

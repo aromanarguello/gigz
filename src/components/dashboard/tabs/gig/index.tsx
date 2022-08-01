@@ -1,7 +1,7 @@
 import { SearchIcon, ViewGridIcon, ViewListIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { FormEvent } from 'react';
+import { FormEvent, useState } from 'react';
 import { trpc } from '../../../../utils/trpc';
 import SearchInput from '../../../inputs/searchInput';
 
@@ -12,7 +12,8 @@ const listItemBaseStyles = 'my-2 font-semibold text-sm';
 const menuButtonStyles = 'focus:text-blue-500';
 
 export const GigTab = () => {
-  const { data } = trpc.useQuery(['gig.gigs']);
+  const [orderBy, setOrderBy] = useState('desc');
+  const { data } = trpc.useQuery(['gig.gigs', { orderBy }]);
   const router = useRouter();
 
   const handleOpenPage = (id: string) => {
@@ -23,6 +24,8 @@ export const GigTab = () => {
     e.preventDefault();
     // TODO
   };
+
+  const handleOrderBy = (orderBy: string) => setOrderBy(orderBy);
 
   return (
     <>
@@ -39,13 +42,19 @@ export const GigTab = () => {
           <p>Sort By:</p>
           <ul className="flex space-x-8">
             <li>
-              <button className={menuButtonStyles}>Title</button>
+              <button className={menuButtonStyles} onClick={() => handleOrderBy('title')}>
+                Title
+              </button>
             </li>
             <li>
-              <button className={menuButtonStyles}>Newest</button>
+              <button className={menuButtonStyles} onClick={() => handleOrderBy('desc')}>
+                Newest
+              </button>
             </li>
             <li>
-              <button className={menuButtonStyles}>Oldest</button>
+              <button className={menuButtonStyles} onClick={() => handleOrderBy('asc')}>
+                Oldest
+              </button>
             </li>
           </ul>
         </div>
