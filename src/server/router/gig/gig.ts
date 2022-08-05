@@ -101,4 +101,22 @@ export const gigRouter = createRouter()
         },
       });
     },
+  })
+  .mutation('delete-gig', {
+    input: ByIdInputSchema,
+    resolve({ ctx, input }) {
+      const session = ctx.session;
+
+      if (!session?.user?.id) {
+        throw new TRPCError({ code: 'UNAUTHORIZED' });
+      }
+
+      ctx.prisma.gig.delete({
+        where: {
+          id: input.id,
+        },
+      });
+
+      return true;
+    },
   });

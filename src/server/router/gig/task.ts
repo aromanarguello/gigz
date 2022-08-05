@@ -14,13 +14,22 @@ export const TaskSchema = z.object({
 
 const UpdateTaskSchema = z.object({
   id: z.string(),
-  task: TaskSchema,
+  task: z.object({
+    title: z.string().optional(),
+    description: z.string().optional(),
+    timeEstimateAmount: z.number().optional(),
+    timeEstimateUnit: z.enum(['SECOND', 'MINUTE', 'HOUR', 'DAY']).optional(),
+    deadline: z.date().optional(),
+    gigId: z.string().optional(),
+    isPriority: z.boolean().optional(),
+  }),
 });
 
 export const gigTaskRouter = createRouter()
   .mutation('create-task', {
     input: TaskSchema,
     resolve({ ctx, input }) {
+      console.log('🚀 ~ file: task.ts ~ line 32 ~ resolve ~ input', input);
       const session = ctx.session;
 
       if (!session?.user) {

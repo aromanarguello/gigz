@@ -1,21 +1,39 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
-import { BriefcaseIcon, CashIcon, ClipboardListIcon, InboxIcon } from '@heroicons/react/solid';
+import {
+  CashIcon,
+  ClipboardListIcon,
+  ClockIcon,
+  FlagIcon,
+  PencilIcon,
+  ViewBoardsIcon,
+  ViewListIcon,
+} from '@heroicons/react/solid';
+import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import BaseButton from '../../../components/buttons/base';
-
-import GigTab from '../../../components/dashboard/tabs/gig';
 import DashboardLayout from '../../../components/layouts/dashboard';
 import CreateGigTaskModal from '../../../components/modals/createGigTask';
+import TaskCard from '../../../components/tasks/taskCard';
 import { trpc } from '../../../utils/trpc';
 
 const GigPage = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isPriority, setIsPriority] = useState(false);
   const router = useRouter();
   const gigId = router.query.gigId as string;
-  const { data: gig } = trpc.useQuery(['gig.gig-by-id', { id: gigId }]);
+  const { data: tasks } = trpc.useQuery(['task.tasks-by-gig-id', { id: gigId }]);
+  const { mutateAsync: updateTask } = trpc.useMutation(['task.update-task']);
 
   const handleBack = () => router.back();
+  const handlePriority = (taskId: string, isPriority: boolean) => {
+    updateTask({
+      id: taskId,
+      task: {
+        isPriority: !isPriority,
+      },
+    });
+  };
   const openModal = () => setIsOpen(true);
 
   return (
@@ -23,14 +41,26 @@ const GigPage = () => {
       <div>
         <Tabs>
           <div className="flex justify-between pt-4">
-            <TabList className="text-lg font-semibold text-gray-500 px-4 space-x-10">
+            <TabList className="text-lg font-semibold text-gray-400 px-4 space-x-10">
               <Tab>
                 <ClipboardListIcon className="w-4 h-4 mr-2" />
-                Tasks
+                List Tasks
               </Tab>
-              <Tab>
+              <Tab isDisabled>
+                <ViewBoardsIcon className="w-4 h-4 mr-2" />
+                Board
+              </Tab>
+              <Tab isDisabled>
+                <ViewListIcon className="w-4 h-4 mr-2" />
+                Timeline
+              </Tab>
+              <Tab isDisabled>
                 <CashIcon className="w-4 h-4 mr-2" />
                 Invoices
+              </Tab>
+              <Tab isDisabled>
+                <PencilIcon className="w-4 h-4 mr-2" />
+                Notepad
               </Tab>
             </TabList>
             <button
@@ -42,8 +72,14 @@ const GigPage = () => {
           </div>
           <TabPanels>
             <TabPanel p="0">
-              <div className="border border-black h-12"></div>
-              <div></div>
+              <div className=""></div>
+              <ul className="mt-8 space-y-4">
+                {tasks?.map((task) => (
+                  <Fragment key={task.id}>
+                    <TaskCard task={task} handlePriority={handlePriority} />
+                  </Fragment>
+                ))}
+              </ul>
             </TabPanel>
           </TabPanels>
         </Tabs>

@@ -8,7 +8,7 @@ export interface CreateGigModalProps {
 
 const CreateGigModal = ({ isOpen, setIsOpen }: CreateGigModalProps) => {
   return (
-    <BaseModal title="Create Payment" setIsOpen={setIsOpen} isOpen={isOpen}>
+    <BaseModal title="Create Gig" setIsOpen={setIsOpen} isOpen={isOpen}>
       <div className="mt-2">
         <CreateGigForm />
       </div>

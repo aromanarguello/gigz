@@ -30,7 +30,7 @@ export const GigTab = () => {
   return (
     <>
       <div className="w-full grid md:grid-cols-3 items-center">
-        <div className=" border h-20 flex items-center justify-between">
+        <div className="border h-20 flex items-center justify-between">
           <p className="text-l font-bold text-gray-500 ml-10">You have {data?.length} gigs</p>
           <div className="bg-white rounded-3xl mr-2  h-10 w-24 flex flex-row justify-around items-center text-gray-400 p-2">
             <ViewGridIcon className="w-6 h-6" />
@@ -60,7 +60,7 @@ export const GigTab = () => {
         </div>
       </div>
       <div className="border border-gray-300" />
-      <div className="h-[670px] overflow-y-auto mt-4">
+      <div className="h-[800px] overflow-y-auto mt-4">
         <div className=" w-full flex flex-wrap overflow-y-auto justify-center">
           {data?.map((gig) => (
             <div
@@ -73,7 +73,7 @@ export const GigTab = () => {
                 </div>
                 <div className="flex items-start p-4 border-r-gray-300 flex-col justify-center">
                   <p className="text-gray-600 font-semibold">{gig.title || 'Untitled'}</p>
-                  <p className="mt-4 text-xs font-semibold text-gray-400">{gig.type?.toLocaleLowerCase()}</p>
+                  <p className="mt-4 text-xs font-semibold text-gray-400 capitalize">{gig.type?.replace('_', ' ')}</p>
                 </div>
               </div>
               <div className="p-4">
@@ -82,7 +82,8 @@ export const GigTab = () => {
                     Description: <span className={spanBaseStyles}>{gig.description || 'Not added'}</span>
                   </li>
                   <li className={listItemBaseStyles}>
-                    Open Tasks: <span className={spanBaseStyles}>{gig.tasks?.length}</span>
+                    Open Tasks:{' '}
+                    <span className={spanBaseStyles}>{gig.tasks.filter((task) => task.isActive)?.length}</span>
                   </li>
                   <li className={listItemBaseStyles}>
                     Contact: <span className={spanBaseStyles}>aromanarguello@gmail.com</span>

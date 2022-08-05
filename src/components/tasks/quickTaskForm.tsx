@@ -16,6 +16,7 @@ export interface QuickTaskFormProps {
 }
 
 const QuickTaskForm = ({ gigId }: QuickTaskFormProps) => {
+  console.log('🚀 ~ file: quickTaskForm.tsx ~ line 19 ~ QuickTaskForm ~ gigId', gigId);
   const { mutateAsync: createTask } = trpc.useMutation(['task.create-task']);
 
   const {

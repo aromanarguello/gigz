@@ -8,18 +8,19 @@ import Image from 'next/image';
 import { trpc } from '../../../utils/trpc';
 import BaseInput from '../../inputs/baseInput';
 import { GigType } from '@prisma/client';
+import BaseListbox from '../../listBox/baseListBox';
 
 export const GigSchema = z.object({
   title: z.string(),
   description: z.string(),
   startDate: z.date(),
-  // type: z.string(),
 });
 
 type FormData = z.infer<typeof GigSchema>;
 
 export const CreateGigForm = () => {
   const [imageUrl, setImageUrl] = useState('');
+  const [gigType, setGigType] = useState<GigType>('CONSULTING');
 
   const { uploadToS3, openFileDialog, FileInput } = useS3Upload();
 
@@ -38,8 +39,9 @@ export const CreateGigForm = () => {
     const params = {
       ...data,
       logoUrl: imageUrl,
-      type: GigType.CONTRACT,
+      type: GigType[gigType],
     };
+
     createGigMutation(params);
     setImageUrl('');
     reset();
@@ -77,6 +79,7 @@ export const CreateGigForm = () => {
           hasError={errors.startDate !== undefined}
           valueAsDate
         />
+        <BaseListbox option={gigType} setOption={setGigType} />
         <div className="flex justify-center">
           {imageUrl && <Image src={imageUrl} alt="logo-preview" className="w-32 h-32" width={100} height={100} />}
           <FileInput onChange={handleFileChange} />
