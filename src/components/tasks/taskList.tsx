@@ -12,6 +12,7 @@ import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
 import { trpc } from '../../utils/trpc';
+import Timer from '../timer/timer';
 
 interface TaskCardProps {
   isDeleteMode: boolean;
@@ -20,7 +21,7 @@ interface TaskCardProps {
 
 const TaskList = ({ gigId, isDeleteMode }: TaskCardProps) => {
   const [tasks, setTasks] = useState<GigTasks[]>([]);
-  const [isPriority] = useState(false);
+  const [isPriority, setIsPriority] = useState(false);
   const [taskCardState, setTaskCardState] = useState<string[]>([]);
 
   const { data } = trpc.useQuery(['task.tasksByGigId', { id: gigId }]);
@@ -73,7 +74,7 @@ const TaskList = ({ gigId, isDeleteMode }: TaskCardProps) => {
       {tasks?.map((task) => (
         <li
           key={task.id}
-          className={`w-3/4 h-44 md:h-${isExpanded(task.id) ? '[400] grid-rows-2' : '16'}
+          className={`w-3/4 h-44 md:h-${isExpanded(task.id) ? 'full grid-row-2' : '16'}
           bg-gray-50 rounded-lg sm:flex sm:flex-wrap 
           md:grid md:grid-cols-5 md:justify-center px-4 justify-evenly items-center`}
         >
@@ -122,6 +123,11 @@ const TaskList = ({ gigId, isDeleteMode }: TaskCardProps) => {
               />
             )}
           </div>
+          {isExpanded(task.id) && (
+            <div className="flex flex-col justify-center">
+              <Timer id={task.id} />
+            </div>
+          )}
         </li>
       ))}
     </ul>

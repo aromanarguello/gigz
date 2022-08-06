@@ -46,17 +46,18 @@ model VerificationToken {
 }
 
 model User {
-    id            String    @id @default(uuid())
+    id            String      @id @default(uuid())
     name          String
-    email         String    @unique
+    email         String      @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
     gigs          Gig[]
-    createdAt     DateTime  @default(now())
-    updatedAt     DateTime  @updatedAt
+    createdAt     DateTime    @default(now())
+    updatedAt     DateTime    @updatedAt
     invoices      Invoice[]
+    Timer         TaskTimer[]
 }
 
 enum GigType {
@@ -165,19 +166,33 @@ model InvoiceExpense {
 }
 
 model GigTasks {
-    id                 String     @id @default(uuid())
+    id                 String      @id @default(uuid())
     title              String
     description        String?
-    createdAt          DateTime   @default(now())
-    updatedAt          DateTime   @updatedAt
+    createdAt          DateTime    @default(now())
+    updatedAt          DateTime    @updatedAt
     timeEstimateAmount Int?
     timeEstimateUnit   TimeUnits?
     deadline           DateTime?
-    completed          Boolean    @default(false)
-    status             TaskStatus @default(PENDING)
-    isActive           Boolean    @default(true)
-    isPriority         Boolean    @default(false)
-    gig                Gig?       @relation(fields: [gigId], references: [id], onDelete: Cascade)
+    completed          Boolean     @default(false)
+    status             TaskStatus  @default(PENDING)
+    isActive           Boolean     @default(true)
+    isPriority         Boolean     @default(false)
+    gig                Gig?        @relation(fields: [gigId], references: [id], onDelete: Cascade)
     gigId              String
     deletedAt          DateTime?
+    TaskTimer          TaskTimer[]
+}
+
+model TaskTimer {
+    id        String    @id @default(uuid())
+    userId    String
+    startedAt DateTime
+    stoppedAt DateTime?
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    taskId    String
+    user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    task      GigTasks  @relation(fields: [taskId], references: [id], onDelete: Cascade)
+    isActive  Boolean   @default(true)
 }

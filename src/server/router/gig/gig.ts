@@ -1,6 +1,5 @@
 import { CreateGigSchema } from './../../../constants/schemas/gig';
 import { TRPCError } from '@trpc/server';
-import { GigType } from '@prisma/client';
 import { createRouter } from '../context';
 import { ByIdInputSchema } from '../../../constants/schemas/shared';
 import { Events } from '../../../constants/events';

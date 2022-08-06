@@ -33,7 +33,7 @@ const CreateInvoiceSchema = z.object({
 });
 
 export const gigInvoiceRouter = createRouter()
-  .mutation('create-invoice', {
+  .mutation('createInvoice', {
     input: CreateInvoiceSchema,
     resolve({ ctx, input }) {
       const session = ctx.session;
@@ -56,7 +56,7 @@ export const gigInvoiceRouter = createRouter()
       });
     },
   })
-  .query('invoices-by-gig-id', {
+  .query('invoicesByGigId', {
     input: ByIdInputSchema,
     resolve({ ctx, input }) {
       const invoices = ctx.prisma.invoice.findMany({
