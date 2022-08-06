@@ -1,4 +1,12 @@
-import { ClockIcon, FlagIcon, PencilIcon, TrashIcon } from '@heroicons/react/solid';
+import {
+  ChevronDoubleDownIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  ClockIcon,
+  FlagIcon,
+  PencilIcon,
+  TrashIcon,
+} from '@heroicons/react/solid';
 import { GigTasks } from '@prisma/client';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
@@ -12,10 +20,18 @@ interface TaskCardProps {
 
 const TaskList = ({ gigId, isDeleteMode }: TaskCardProps) => {
   const [tasks, setTasks] = useState<GigTasks[]>([]);
-  const [isPriority, setIsPriority] = useState(false);
+  const [isPriority] = useState(false);
+  const [taskCardState, setTaskCardState] = useState<string[]>([]);
+
   const { data } = trpc.useQuery(['task.tasksByGigId', { id: gigId }]);
   const { mutateAsync: deleteTask } = trpc.useMutation(['task.deleteTask']);
   const { mutateAsync: updateTask } = trpc.useMutation(['task.updateTask']);
+
+  useEffect(() => {
+    if (data) {
+      setTasks(data);
+    }
+  }, [data]);
 
   const handlePriority = (taskId: string, isPriority: boolean) => {
     setTasks((prev) =>
@@ -41,18 +57,25 @@ const TaskList = ({ gigId, isDeleteMode }: TaskCardProps) => {
     setTasks((prev) => prev.filter((task) => task.id !== id));
   };
 
-  useEffect(() => {
-    if (data) {
-      setTasks(data);
-    }
-  }, [data]);
+  const handleExpand = (id: string) => {
+    setTaskCardState((prev) => {
+      if (prev.includes(id)) {
+        return prev.filter((taskId) => taskId !== id);
+      }
+      return [...prev, id];
+    });
+  };
+
+  const isExpanded = (id: string) => taskCardState.includes(id);
 
   return (
     <ul className="mt-8 space-y-4 px-4">
       {tasks?.map((task) => (
         <li
           key={task.id}
-          className="w-3/4 h-44 md:h-16 bg-gray-50 rounded-lg sm:flex sm:flex-wrap md:grid md:grid-cols-5 md:justify-center px-4 justify-evenly items-center"
+          className={`w-3/4 h-44 md:h-${isExpanded(task.id) ? '[400] grid-rows-2' : '16'}
+          bg-gray-50 rounded-lg sm:flex sm:flex-wrap 
+          md:grid md:grid-cols-5 md:justify-center px-4 justify-evenly items-center`}
         >
           <div>
             <p className="text-gray-400 font-bold text-xs">Title</p>
@@ -80,6 +103,17 @@ const TaskList = ({ gigId, isDeleteMode }: TaskCardProps) => {
               onClick={() => handlePriority(task.id, task.isPriority)}
               className={`w-6 h-6 mr-2 ${(isPriority || task.isPriority) && 'text-blue-500'} cursor-pointer`}
             />
+            {isExpanded(task.id) ? (
+              <ChevronUpIcon
+                onClick={() => handleExpand(task.id)}
+                className="w-6 h-6 mr-2 text-gray-400 cursor-pointer"
+              />
+            ) : (
+              <ChevronDownIcon
+                onClick={() => handleExpand(task.id)}
+                className="w-6 h-6 mr-2 text-gray-400 cursor-pointer"
+              />
+            )}
             {/* <PencilIcon className="w-6 h-6 mr-2 text-gray-400 cursor-pointer hover:text-bl-500" /> */}
             {isDeleteMode && (
               <TrashIcon

@@ -1,7 +1,9 @@
-import { SearchIcon, ViewGridIcon, ViewListIcon } from '@heroicons/react/solid';
+import { ViewGridIcon, ViewListIcon } from '@heroicons/react/solid';
+import { Gig, GigTasks } from '@prisma/client';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
+
 import { trpc } from '../../../../utils/trpc';
 import SearchInput from '../../../inputs/searchInput';
 
@@ -11,15 +13,24 @@ const listItemBaseStyles = 'my-2 font-semibold text-sm';
 
 const menuButtonStyles = 'focus:text-blue-500';
 
+type GigType = (Gig & {
+  tasks: GigTasks[];
+})[];
+
 export const GigTab = () => {
   const [orderBy, setOrderBy] = useState('desc');
   const [searchParams, setSearchParams] = useState('');
+  const [gigs, setGigs] = useState<GigType>([]);
   const { data } = trpc.useQuery(['gig.gigs', { orderBy, searchParams }]);
   const router = useRouter();
 
   const handleOpenPage = (id: string) => {
     router.push(`/dashboard/gig/${id}`);
   };
+
+  useEffect(() => {
+    setGigs(data || []);
+  }, [data]);
 
   const handleOrderBy = (orderBy: string) => setOrderBy(orderBy);
 
@@ -60,7 +71,7 @@ export const GigTab = () => {
       <div className="border border-gray-300" />
       <div className="h-[800px] overflow-y-auto mt-4">
         <div className=" w-full flex flex-wrap overflow-y-auto justify-center">
-          {data?.map((gig) => (
+          {gigs?.map((gig) => (
             <div
               key={gig.id}
               className="m-4 max-w-sm rounded-lg bg-gray-100 overflow-hidden shadow-lg w-72 h-72 grid grid-rows-[1.5fr_2fr]"
