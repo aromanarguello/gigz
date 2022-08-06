@@ -7,7 +7,7 @@ import { Events } from '../../../constants/events';
 import { z } from 'zod';
 
 export const gigRouter = createRouter()
-  .mutation('create-gig', {
+  .mutation('createGig', {
     input: CreateGigSchema,
     resolve({ ctx, input }) {
       const session = ctx.session;
@@ -35,6 +35,7 @@ export const gigRouter = createRouter()
   .query('gigs', {
     input: z.object({
       orderBy: z.string(),
+      searchParams: z.string().optional(),
     }),
     resolve({ ctx, input }) {
       let orderBy = {};
@@ -48,15 +49,23 @@ export const gigRouter = createRouter()
       return ctx.prisma.gig.findMany({
         where: {
           userId: ctx.session?.user?.id,
+          title: {
+            contains: input.searchParams,
+            mode: 'insensitive',
+          },
         },
         include: {
-          tasks: true,
+          tasks: {
+            where: {
+              deletedAt: null,
+            },
+          },
         },
         orderBy,
       });
     },
   })
-  .query('gig-short', {
+  .query('gigShort', {
     input: ByIdInputSchema,
     resolve({ ctx, input: { id } }) {
       return ctx.prisma.gig.findUnique({
@@ -66,7 +75,7 @@ export const gigRouter = createRouter()
       });
     },
   })
-  .query('gig-by-id', {
+  .query('gigById', {
     input: ByIdInputSchema,
     resolve({ ctx, input }) {
       const gig = ctx.prisma.gig.findUnique({
@@ -92,7 +101,7 @@ export const gigRouter = createRouter()
       return gig;
     },
   })
-  .query('gig-count', {
+  .query('gigCount', {
     input: ByIdInputSchema,
     resolve({ ctx, input }) {
       return ctx.prisma.gig.count({
@@ -102,7 +111,7 @@ export const gigRouter = createRouter()
       });
     },
   })
-  .mutation('delete-gig', {
+  .mutation('deleteGig', {
     input: ByIdInputSchema,
     resolve({ ctx, input }) {
       const session = ctx.session;

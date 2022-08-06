@@ -13,19 +13,17 @@ const menuButtonStyles = 'focus:text-blue-500';
 
 export const GigTab = () => {
   const [orderBy, setOrderBy] = useState('desc');
-  const { data } = trpc.useQuery(['gig.gigs', { orderBy }]);
+  const [searchParams, setSearchParams] = useState('');
+  const { data } = trpc.useQuery(['gig.gigs', { orderBy, searchParams }]);
   const router = useRouter();
 
   const handleOpenPage = (id: string) => {
     router.push(`/dashboard/gig/${id}`);
   };
 
-  const handleOnSearch = (e: FormEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    // TODO
-  };
-
   const handleOrderBy = (orderBy: string) => setOrderBy(orderBy);
+
+  const handleSearch = (e: FormEvent<HTMLInputElement>) => setSearchParams(e.currentTarget.value);
 
   return (
     <>
@@ -37,7 +35,7 @@ export const GigTab = () => {
             <ViewListIcon className="w-6 h-6" />
           </div>
         </div>
-        <SearchInput onChange={handleOnSearch} placeholder="Search Gigs" inputStyles="ml-4" />
+        <SearchInput onChange={handleSearch} placeholder="Search Gigs" inputStyles="ml-4" />
         <div className="flex space-x-8 text-gray-400 text-sm font-semibold justify-self-center">
           <p>Sort By:</p>
           <ul className="flex space-x-8">

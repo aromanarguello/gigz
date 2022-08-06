@@ -29,7 +29,6 @@ export const gigTaskRouter = createRouter()
   .mutation('createTask', {
     input: TaskSchema,
     resolve({ ctx, input }) {
-      console.log('🚀 ~ file: task.ts ~ line 32 ~ resolve ~ input', input);
       const session = ctx.session;
 
       if (!session?.user) {
@@ -66,7 +65,7 @@ export const gigTaskRouter = createRouter()
       }
 
       return ctx.prisma.gigTasks.findMany({
-        where: { gigId: id },
+        where: { gigId: id, deletedAt: null },
       });
     },
   })
@@ -93,8 +92,9 @@ export const gigTaskRouter = createRouter()
         throw new TRPCError({ code: 'UNAUTHORIZED' });
       }
 
-      return ctx.prisma.gigTasks.delete({
+      return ctx.prisma.gigTasks.update({
         where: { id: input.id },
+        data: { deletedAt: new Date() },
       });
     },
   });

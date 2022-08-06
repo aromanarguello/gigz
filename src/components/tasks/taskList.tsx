@@ -1,4 +1,4 @@
-import { ClockIcon, FlagIcon, TrashIcon } from '@heroicons/react/solid';
+import { ClockIcon, FlagIcon, PencilIcon, TrashIcon } from '@heroicons/react/solid';
 import { GigTasks } from '@prisma/client';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
@@ -48,7 +48,7 @@ const TaskList = ({ gigId, isDeleteMode }: TaskCardProps) => {
   }, [data]);
 
   return (
-    <ul className="mt-8 space-y-4">
+    <ul className="mt-8 space-y-4 px-4">
       {tasks?.map((task) => (
         <li
           key={task.id}
@@ -80,6 +80,7 @@ const TaskList = ({ gigId, isDeleteMode }: TaskCardProps) => {
               onClick={() => handlePriority(task.id, task.isPriority)}
               className={`w-6 h-6 mr-2 ${(isPriority || task.isPriority) && 'text-blue-500'} cursor-pointer`}
             />
+            {/* <PencilIcon className="w-6 h-6 mr-2 text-gray-400 cursor-pointer hover:text-bl-500" /> */}
             {isDeleteMode && (
               <TrashIcon
                 onClick={() => handleDeleteTask(task.id)}

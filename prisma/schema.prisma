@@ -179,4 +179,5 @@ model GigTasks {
     isPriority         Boolean    @default(false)
     gig                Gig?       @relation(fields: [gigId], references: [id], onDelete: Cascade)
     gigId              String
+    deletedAt          DateTime?
 }

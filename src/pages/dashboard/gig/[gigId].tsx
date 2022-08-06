@@ -7,7 +7,6 @@ import BaseButton from '../../../components/buttons/base';
 import DashboardLayout from '../../../components/layouts/dashboard';
 import CreateGigTaskModal from '../../../components/modals/createGigTask';
 import TaskList from '../../../components/tasks/taskList';
-import { trpc } from '../../../utils/trpc';
 
 const GigPage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -56,13 +55,14 @@ const GigPage = () => {
           </div>
           <TabPanels>
             <TabPanel p="0">
-              <div className=""></div>
-              <BaseButton text="Delete" onClick={handleDeleteMode} />
+              <div className="flex justify-end pr-2">
+                <BaseButton text="Delete Task" onClick={handleDeleteMode} />
+                <BaseButton onClick={handleBack} text="Back" />
+              </div>
               <TaskList gigId={gigId} isDeleteMode={isDeleteMode} />
             </TabPanel>
           </TabPanels>
         </Tabs>
-        <BaseButton onClick={handleBack} text="BACK" />
       </div>
       <CreateGigTaskModal isOpen={isOpen} setIsOpen={setIsOpen} gigId={gigId} />
     </DashboardLayout>

@@ -33,7 +33,7 @@ export const CreateGigForm = () => {
     resolver: zodResolver(GigSchema),
   });
 
-  const { mutateAsync: createGigMutation } = trpc.useMutation(['gig.create-gig']);
+  const { mutateAsync: createGigMutation } = trpc.useMutation(['gig.createGig']);
 
   const onSubmit = (data: FormData) => {
     const params = {
