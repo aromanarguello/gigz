@@ -26,7 +26,7 @@ const UpdateTaskSchema = z.object({
 });
 
 export const gigTaskRouter = createRouter()
-  .mutation('create-task', {
+  .mutation('createTask', {
     input: TaskSchema,
     resolve({ ctx, input }) {
       console.log('🚀 ~ file: task.ts ~ line 32 ~ resolve ~ input', input);
@@ -41,7 +41,7 @@ export const gigTaskRouter = createRouter()
       });
     },
   })
-  .mutation('update-task', {
+  .mutation('updateTask', {
     input: UpdateTaskSchema,
     resolve({ ctx, input: { id, task } }) {
       const session = ctx.session;
@@ -56,7 +56,7 @@ export const gigTaskRouter = createRouter()
       });
     },
   })
-  .query('tasks-by-gig-id', {
+  .query('tasksByGigId', {
     input: ByIdInputSchema,
     resolve({ ctx, input: { id } }) {
       const session = ctx.session;
@@ -70,7 +70,7 @@ export const gigTaskRouter = createRouter()
       });
     },
   })
-  .query('task-by-id', {
+  .query('taskById', {
     input: ByIdInputSchema,
     resolve({ ctx, input: { id } }) {
       const session = ctx.session;
@@ -81,6 +81,20 @@ export const gigTaskRouter = createRouter()
 
       return ctx.prisma.gigTasks.findUnique({
         where: { id },
+      });
+    },
+  })
+  .mutation('deleteTask', {
+    input: ByIdInputSchema,
+    resolve({ ctx, input }) {
+      const session = ctx.session;
+
+      if (!session?.user) {
+        throw new TRPCError({ code: 'UNAUTHORIZED' });
+      }
+
+      return ctx.prisma.gigTasks.delete({
+        where: { id: input.id },
       });
     },
   });

@@ -1,39 +1,23 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
-import {
-  CashIcon,
-  ClipboardListIcon,
-  ClockIcon,
-  FlagIcon,
-  PencilIcon,
-  ViewBoardsIcon,
-  ViewListIcon,
-} from '@heroicons/react/solid';
-import dayjs from 'dayjs';
+import { CashIcon, ClipboardListIcon, PencilIcon, ViewBoardsIcon, ViewListIcon } from '@heroicons/react/solid';
 import { useRouter } from 'next/router';
-import { Fragment, useState } from 'react';
+import { useEffect, useState } from 'react';
+
 import BaseButton from '../../../components/buttons/base';
 import DashboardLayout from '../../../components/layouts/dashboard';
 import CreateGigTaskModal from '../../../components/modals/createGigTask';
-import TaskCard from '../../../components/tasks/taskCard';
+import TaskList from '../../../components/tasks/taskList';
 import { trpc } from '../../../utils/trpc';
 
 const GigPage = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isPriority, setIsPriority] = useState(false);
+  const [isDeleteMode, setIsDeleteMode] = useState(false);
   const router = useRouter();
   const gigId = router.query.gigId as string;
-  const { data: tasks } = trpc.useQuery(['task.tasks-by-gig-id', { id: gigId }]);
-  const { mutateAsync: updateTask } = trpc.useMutation(['task.update-task']);
 
   const handleBack = () => router.back();
-  const handlePriority = (taskId: string, isPriority: boolean) => {
-    updateTask({
-      id: taskId,
-      task: {
-        isPriority: !isPriority,
-      },
-    });
-  };
+  const handleDeleteMode = () => setIsDeleteMode((prev) => !prev);
+
   const openModal = () => setIsOpen(true);
 
   return (
@@ -73,13 +57,8 @@ const GigPage = () => {
           <TabPanels>
             <TabPanel p="0">
               <div className=""></div>
-              <ul className="mt-8 space-y-4">
-                {tasks?.map((task) => (
-                  <Fragment key={task.id}>
-                    <TaskCard task={task} handlePriority={handlePriority} />
-                  </Fragment>
-                ))}
-              </ul>
+              <BaseButton text="Delete" onClick={handleDeleteMode} />
+              <TaskList gigId={gigId} isDeleteMode={isDeleteMode} />
             </TabPanel>
           </TabPanels>
         </Tabs>
