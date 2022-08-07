@@ -10,6 +10,7 @@ import {
 import { GigTasks } from '@prisma/client';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
+import { toHHMMSS } from '../../utils/helpers';
 
 import { trpc } from '../../utils/trpc';
 import Timer from '../timer/timer';
@@ -22,9 +23,12 @@ interface TaskCardProps {
 const TaskList = ({ gigId, isDeleteMode }: TaskCardProps) => {
   const [tasks, setTasks] = useState<GigTasks[]>([]);
   const [isPriority, setIsPriority] = useState(false);
-  const [taskCardState, setTaskCardState] = useState<string[]>([]);
+  const [expandedCardIds, setExpandedCardIds] = useState<string[]>([]);
 
   const { data } = trpc.useQuery(['task.tasksByGigId', { id: gigId }]);
+  const { data: totalTaskTime } = trpc.useQuery(['timer.totalTime', { ids: expandedCardIds }], {
+    keepPreviousData: true,
+  });
   const { mutateAsync: deleteTask } = trpc.useMutation(['task.deleteTask']);
   const { mutateAsync: updateTask } = trpc.useMutation(['task.updateTask']);
 
@@ -59,7 +63,7 @@ const TaskList = ({ gigId, isDeleteMode }: TaskCardProps) => {
   };
 
   const handleExpand = (id: string) => {
-    setTaskCardState((prev) => {
+    setExpandedCardIds((prev) => {
       if (prev.includes(id)) {
         return prev.filter((taskId) => taskId !== id);
       }
@@ -67,14 +71,14 @@ const TaskList = ({ gigId, isDeleteMode }: TaskCardProps) => {
     });
   };
 
-  const isExpanded = (id: string) => taskCardState.includes(id);
+  const isExpanded = (id: string) => expandedCardIds.includes(id);
 
   return (
     <ul className="mt-8 space-y-4 px-4">
       {tasks?.map((task) => (
         <li
           key={task.id}
-          className={`w-3/4 h-44 md:h-${isExpanded(task.id) ? 'full grid-row-2' : '16'}
+          className={`w-3/4 h-44 md:h-${isExpanded(task.id) ? '[800] full grid-row-2' : '16'}
           bg-gray-50 rounded-lg sm:flex sm:flex-wrap 
           md:grid md:grid-cols-5 md:justify-center px-4 justify-evenly items-center`}
         >
@@ -125,6 +129,9 @@ const TaskList = ({ gigId, isDeleteMode }: TaskCardProps) => {
           </div>
           {isExpanded(task.id) && (
             <div className="flex flex-col justify-center">
+              <p className="font-semibold text-gray-600 my-4">
+                Total time spent: {toHHMMSS((totalTaskTime && totalTaskTime[task.id]) || 0)}
+              </p>
               <Timer id={task.id} />
             </div>
           )}

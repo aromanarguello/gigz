@@ -1,10 +1,13 @@
 import { TaskTimer } from '@prisma/client';
 import { useCallback, useEffect, useState } from 'react';
+import { toHHMMSS } from '../../utils/helpers';
 import { trpc } from '../../utils/trpc';
 
 interface TimerProps {
   id: string;
 }
+
+const buttonStyles = `border border-gray-300 w-12 text-xs text-gray-500 font-semibold bg-gray-200 rounded-sm`;
 
 const Timer = ({ id }: TimerProps) => {
   const [isRunning, setIsRunning] = useState(false);
@@ -47,24 +50,20 @@ const Timer = ({ id }: TimerProps) => {
     return () => clearInterval(interval);
   }, [isRunning, seconds]);
 
-  const secondsToHms = (s: number) => ({
-    hours: ((s - (s % 3600)) / 3600) % 60 || '00',
-    minutes: ((s - (s % 60)) / 60) % 60 || '00',
-    seconds: s % 60 || '00',
-  });
-
   return (
-    <div>
-      <div className="space-x-4">
-        <button onClick={start} disabled={isRunning} className={`${isRunning && 'cursor-not-allowed'}`}>
+    <div className="border broder-blue-500 rounded-lg w-64 h-18 flex flex-col items-center">
+      <div className="space-x-4 flex justify-center my-2">
+        <button onClick={start} disabled={isRunning} className={`${isRunning && `cursor-not-allowed`} ${buttonStyles}`}>
           Start
         </button>
-        <button onClick={stop}>Stop</button>
-        <button onClick={save}>Save</button>
+        <button onClick={stop} className={buttonStyles}>
+          Stop
+        </button>
+        <button onClick={save} className={buttonStyles}>
+          Save
+        </button>
       </div>
-      <div>{`${secondsToHms(seconds).hours} : ${secondsToHms(seconds).minutes} : ${
-        secondsToHms(seconds).seconds
-      }`}</div>
+      <div className="text-2xl font-semibold text-gray-500">{toHHMMSS(seconds)}</div>
     </div>
   );
 };
