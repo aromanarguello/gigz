@@ -1,7 +1,7 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
-import { ByIdInputSchema } from '../../../constants/schemas/shared';
-import { createRouter } from '../context';
+import { ByIdInputSchema } from '../../../../constants/schemas/shared';
+import { createRouter } from '../../context';
 
 export const TaskSchema = z.object({
   title: z.string(),

@@ -3,9 +3,9 @@ import { createRouter } from './context';
 import superjson from 'superjson';
 
 import { authRouter } from './auth';
-import { gigRouter } from './gig/gig';
-import { gigTaskRouter } from './gig/task';
-import { timerRouter } from './timer/timer';
+import { gigRouter } from './gig/gig/gig.router';
+import { gigTaskRouter } from './gig/task/task.router';
+import { timerRouter } from './timer/timer.router';
 import { invoiceRouter } from './invoice/invoice.router';
 
 export const appRouter = createRouter()

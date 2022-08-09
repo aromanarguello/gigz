@@ -1,8 +1,8 @@
-import { CreateGigSchema } from './../../../constants/schemas/gig';
+import { CreateGigSchema } from '../../../../constants/schemas/gig';
 import { TRPCError } from '@trpc/server';
-import { createRouter } from '../context';
-import { ByIdInputSchema } from '../../../constants/schemas/shared';
-import { Events } from '../../../constants/events';
+import { createRouter } from '../../context';
+import { ByIdInputSchema } from '../../../../constants/schemas/shared';
+import { Events } from '../../../../constants/events';
 import { z } from 'zod';
 
 export const gigRouter = createRouter()
