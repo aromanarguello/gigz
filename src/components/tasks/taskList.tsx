@@ -1,3 +1,4 @@
+import { Divider } from '@chakra-ui/react';
 import {
   ChevronDoubleDownIcon,
   ChevronDownIcon,
@@ -29,6 +30,7 @@ const TaskList = ({ gigId, isDeleteMode }: TaskCardProps) => {
   const { data: totalTaskTime } = trpc.useQuery(['timer.totalTime', { ids: expandedCardIds }], {
     keepPreviousData: true,
   });
+
   const { mutateAsync: deleteTask } = trpc.useMutation(['task.deleteTask']);
   const { mutateAsync: updateTask } = trpc.useMutation(['task.updateTask']);
 
@@ -78,9 +80,9 @@ const TaskList = ({ gigId, isDeleteMode }: TaskCardProps) => {
       {tasks?.map((task) => (
         <li
           key={task.id}
-          className={`w-3/4 h-44 md:h-${isExpanded(task.id) ? '[800] full grid-row-2' : '16'}
-          bg-gray-50 rounded-lg sm:flex sm:flex-wrap 
-          md:grid md:grid-cols-5 md:justify-center px-4 justify-evenly items-center`}
+          className={`w-3/4 h-44 md:h-${
+            isExpanded(task.id) ? '96 full grid-row-2' : '16'
+          } bg-gray-50 rounded-lg sm:flex sm:flex-wrap md:grid md:grid-cols-5 md:justify-center px-4 justify-evenly items-center`}
         >
           <div>
             <p className="text-gray-400 font-bold text-xs">Title</p>
@@ -128,7 +130,7 @@ const TaskList = ({ gigId, isDeleteMode }: TaskCardProps) => {
             )}
           </div>
           {isExpanded(task.id) && (
-            <div className="flex flex-col justify-center">
+            <div className="flex flex-col justify-center w-72">
               <p className="font-semibold text-gray-600 my-4">
                 Total time spent: {toHHMMSS((totalTaskTime && totalTaskTime[task.id]) || 0)}
               </p>

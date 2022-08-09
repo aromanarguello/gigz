@@ -13,6 +13,9 @@ const Timer = ({ id }: TimerProps) => {
   const [isRunning, setIsRunning] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const [runningTimer, setRunningTimer] = useState<TaskTimer | null>(null);
+  const { data: activeTimer } = trpc.useQuery(['timer.activeTimers', { id }], {
+    keepPreviousData: true,
+  });
 
   const { mutateAsync: startTimer } = trpc.useMutation(['timer.startTimer']);
   const { mutateAsync: stopTimer } = trpc.useMutation(['timer.stopTimer']);
@@ -45,10 +48,25 @@ const Timer = ({ id }: TimerProps) => {
       interval = setInterval(() => {
         setSeconds((prev) => prev + 1);
       }, 1000);
+    } else if (activeTimer) {
+      setRunningTimer(activeTimer);
+      let timer: number;
+      // FIX
+      if (activeTimer.stoppedAt) {
+        timer = Math.floor((activeTimer.stoppedAt.getTime() - activeTimer?.startedAt.getTime()) / 1000);
+        setIsRunning(false);
+        setSeconds(timer);
+      } else {
+        timer = Math.floor((new Date(activeTimer?.startedAt).getTime() - new Date().getTime()) / 1000);
+        setIsRunning(true);
+        interval = setInterval(() => {
+          setSeconds(timer + 1);
+        }, 1000);
+      }
     }
     // @ts-ignore
     return () => clearInterval(interval);
-  }, [isRunning, seconds]);
+  }, [isRunning, seconds, activeTimer]);
 
   return (
     <div className="border broder-blue-500 rounded-lg w-64 h-18 flex flex-col items-center">

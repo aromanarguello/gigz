@@ -173,8 +173,10 @@ model GigTasks {
     updatedAt          DateTime    @updatedAt
     timeEstimateAmount Int?
     timeEstimateUnit   TimeUnits?
+    startDate          DateTime?
+    endDate            DateTime?
     deadline           DateTime?
-    completed          Boolean     @default(false)
+    isCompleted        Boolean     @default(false)
     status             TaskStatus  @default(PENDING)
     isActive           Boolean     @default(true)
     isPriority         Boolean     @default(false)

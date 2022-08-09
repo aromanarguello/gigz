@@ -84,4 +84,14 @@ export const timerRouter = createRouter()
 
       return totalTime;
     },
+  })
+  .query('activeTimers', {
+    input: ByIdInputSchema,
+    resolve({ ctx, input: { id } }) {
+      const timers = ctx.prisma.taskTimer.findFirst({
+        where: { taskId: id, isActive: true },
+      });
+
+      return timers;
+    },
   });

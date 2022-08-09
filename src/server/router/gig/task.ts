@@ -94,7 +94,7 @@ export const gigTaskRouter = createRouter()
 
       return ctx.prisma.gigTasks.update({
         where: { id: input.id },
-        data: { deletedAt: new Date() },
+        data: { deletedAt: new Date(), isActive: false },
       });
     },
   });
