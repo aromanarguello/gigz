@@ -39,9 +39,9 @@ export const GigTab = () => {
   return (
     <>
       <div className="w-full grid md:grid-cols-3 items-center">
-        <div className="border h-20 flex items-center justify-between">
+        <div className="border h-10 my-2 flex items-center justify-between">
           <p className="text-l font-bold text-gray-500 ml-10">You have {data?.length} gigs</p>
-          <div className="bg-white rounded-3xl mr-2  h-10 w-24 flex flex-row justify-around items-center text-gray-400 p-2">
+          <div className="bg-white rounded-3xl mr-2 h-10 w-24 flex flex-row justify-around items-center text-gray-400 p-2">
             <ViewGridIcon className="w-6 h-6" />
             <ViewListIcon className="w-6 h-6" />
           </div>

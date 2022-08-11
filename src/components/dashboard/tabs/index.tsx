@@ -12,39 +12,15 @@ export const GigPanel = () => {
 
   return (
     <>
-      <Tabs>
-        <div className="flex justify-between pt-4">
-          <TabList className="text-lg font-semibold text-gray-500 px-4 space-x-10">
-            <Tab>
-              <BriefcaseIcon className="w-4 h-4 mr-2" />
-              Gigs
-            </Tab>
-            <Tab isDisabled>
-              <CalendarIcon className="w-4 h-4 mr-2" />
-              Calendar
-            </Tab>
-            <Tab isDisabled>
-              <InboxIcon className="w-4 h-4 mr-2" />
-              Contacts
-            </Tab>
-            <Tab isDisabled>
-              <CreditCardIcon className="w-4 h-4 mr-2" />
-              Budgets
-            </Tab>
-          </TabList>
-          <button
-            onClick={openModal}
-            className="mr-4 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2 px-4 rounded-3xl shadow-lg"
-          >
-            Add New Gig
-          </button>
-        </div>
-        <TabPanels>
-          <TabPanel p="0">
-            <GigTab />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+      <div className="flex justify-end items-center py-2">
+        <button
+          onClick={openModal}
+          className="mr-4  bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold  px-4 rounded-3xl shadow-lg h-10"
+        >
+          Add New Gig
+        </button>
+      </div>
+      <GigTab />
       <CreateGigModal isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
   );
