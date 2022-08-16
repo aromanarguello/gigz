@@ -1,9 +1,12 @@
+import CreateInvoiceForm from '../../components/forms/createInvoiceForm';
 import DashboardLayout from '../../components/layouts/dashboard';
 
 const Invoice = () => {
   return (
     <DashboardLayout>
-      <h1>Invoices</h1>
+      <div className="w-64">
+        <CreateInvoiceForm />
+      </div>
     </DashboardLayout>
   );
 };

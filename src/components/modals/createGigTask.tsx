@@ -1,4 +1,4 @@
-import QuickTaskForm from '../tasks/quickTaskForm';
+import QuickTaskForm from '../forms/quickTaskForm';
 import BaseModal from './baseModal';
 
 export interface CreateGigTaskProps {
