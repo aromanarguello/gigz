@@ -1,17 +1,29 @@
-import { ViewGridIcon, ViewListIcon } from '@heroicons/react/solid';
+import { Checkbox } from '@chakra-ui/react';
+import {
+  DocumentTextIcon,
+  EyeIcon,
+  FolderIcon,
+  PencilIcon,
+  TrashIcon,
+  UserIcon,
+  ViewGridIcon,
+  ViewListIcon,
+} from '@heroicons/react/solid';
 import { Gig, GigTasks } from '@prisma/client';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FormEvent, useEffect, useState } from 'react';
 
-import { trpc } from '../../../../utils/trpc';
-import SearchInput from '../../../inputs/searchInput';
+import { trpc } from '../../../utils/trpc';
+import SearchInput from '../../inputs/searchInput';
 
 const spanBaseStyles = 'text-sm text-gray-400';
 
-const listItemBaseStyles = 'my-2 font-semibold text-sm';
+const listItemBaseStyles = 'my-2 font-semibold text-sm flex items-center text-gray-400';
 
 const menuButtonStyles = 'focus:text-blue-500';
+
+const iconStyles = 'w-6 h-6 text-gray-400 mr-2';
 
 type GigType = (Gig & {
   tasks: GigTasks[];
@@ -24,7 +36,7 @@ export const GigTab = () => {
   const { data } = trpc.useQuery(['gig.gigs', { orderBy, searchParams }]);
   const router = useRouter();
 
-  const handleOpenPage = (id: string) => {
+  const editGig = (id: string) => {
     router.push(`/dashboard/gig/${id}`);
   };
 
@@ -74,38 +86,48 @@ export const GigTab = () => {
           {gigs?.map((gig) => (
             <div
               key={gig.id}
-              className="m-4 max-w-sm rounded-lg bg-transparent overflow-hidden border-2 border-gray-300 w-64 h-64 grid grid-rows-[1.5fr_2fr]"
+              className="m-4 max-w-sm rounded-lg bg-transparent overflow-hidden border-2 border-gray-200 w-64 h-64 flex flex-col"
             >
-              <div className="grid grid-cols-[1.2fr_2fr] border border-b-gray-300">
-                <div className="w-22 border flex justify-center text-gray-100 border-r-gray-300">
-                  {gig.logo ? <Image src={gig.logo} alt={gig.title} width={100} height={82} /> : null}
+              <div className="h-16 flex justify-between items-center px-4">
+                <Checkbox size="lg" />
+                <div className="flex space-x-4">
+                  <PencilIcon
+                    onClick={() => editGig(gig.id)}
+                    className={`${iconStyles} opacity-60 cursor-pointer hover:text-blue-500`}
+                  />
+                  <TrashIcon className={`${iconStyles} opacity-60 cursor-pointer hover:text-blue-500`} />
+                  <EyeIcon className={`${iconStyles} opacity-60 cursor-pointer hover:text-blue-500`} />
                 </div>
-                <div className="flex items-start p-4 border-r-gray-300 flex-col justify-center">
-                  <p className="text-gray-600 font-semibold">{gig.title || 'Untitled'}</p>
+              </div>
+              <div className="flex items-center">
+                <div className="w-24 h-14 flex rounded-lg justify-center text-gray-100 border-r-gray-300">
+                  {gig.logo ? (
+                    <Image className="rounded-lg" src={gig.logo} alt={gig.title} width={64} height={60} />
+                  ) : null}
+                </div>
+                <div className="flex items-start border-r-gray-300 flex-col justify-center space-y-2">
+                  <p className="text-gray-600 font-semibold text-sm">{gig.title || 'Untitled'}</p>
                   <p className="mt-4 text-xs font-semibold text-gray-400 capitalize">{gig.type?.replace('_', ' ')}</p>
                 </div>
               </div>
-              <div className="p-4">
-                <ul>
+              <div className="p-2 mt-1">
+                <ul className="pl-2">
                   <li className={listItemBaseStyles}>
-                    Description: <span className={spanBaseStyles}>{gig.description || 'Not added'}</span>
+                    <UserIcon className={iconStyles} />
+                    <span className={spanBaseStyles}>aromanarguello@gmail.com</span>
                   </li>
                   <li className={listItemBaseStyles}>
-                    Open Tasks:{' '}
-                    <span className={spanBaseStyles}>{gig.tasks.filter((task) => task.isActive)?.length}</span>
+                    <DocumentTextIcon className={iconStyles} />
+                    <span className={spanBaseStyles}>{gig.description || 'Not added'}</span>
                   </li>
                   <li className={listItemBaseStyles}>
-                    Contact: <span className={spanBaseStyles}>aromanarguello@gmail.com</span>
+                    <FolderIcon className={iconStyles} />
+                    Tasks:{' '}
+                    <span className={`ml-1 ${spanBaseStyles}`}>
+                      {gig.tasks.filter((task) => task.isActive)?.length}
+                    </span>
                   </li>
                 </ul>
-                <div className="flex justify-center">
-                  <button
-                    onClick={() => handleOpenPage(gig.id)}
-                    className="border border-gray-300 my-2 rounded-lg w-24 h-8 text-sm text-gray-400 font-semibold"
-                  >
-                    Open
-                  </button>
-                </div>
               </div>
             </div>
           ))}

@@ -13,11 +13,11 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   }
 
   return (
-    <div className="w=screen bg-gray-50 h-screen overflow-y-auto">
-      <div className="md:mx-auto bg-gray-100 h-full flex flex-col md:flex-row overflow-y-auto">
+    <div className="w-screen bg-gray-50 h-screen overflow-y-auto">
+      <div className=" bg-gray-100 md:w-full h-full flex flex-col md:flex-row overflow-y-auto">
         <SidePanel user={session.user} />
-        <div className=" md:w-3/4 ">
-          <div className="border border-gray-300 h-[900px] rounded-lg overflow-y-hidden mt-8">{children}</div>
+        <div className="md:w-3/4">
+          <div className="border border-gray-300 h-[900px] rounded-lg overflow-y-hidden mt-4">{children}</div>
         </div>
       </div>
     </div>

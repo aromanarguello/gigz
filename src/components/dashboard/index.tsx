@@ -1,7 +1,7 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import { BriefcaseIcon, CalendarIcon, CreditCardIcon, InboxIcon } from '@heroicons/react/solid';
 import { useState } from 'react';
-import CreateGigModal from '../../modals/createGig';
+import CreateGigModal from '../modals/createGig';
 
 import GigTab from './gig';
 

@@ -1,5 +1,5 @@
 import { getSession, signIn, useSession } from 'next-auth/react';
-import { GigPanel } from '../../components/dashboard/tabs';
+import { GigPanel } from '../../components/dashboard';
 import DashboardLayout from '../../components/layouts/dashboard';
 
 export const Dashboard = () => {
