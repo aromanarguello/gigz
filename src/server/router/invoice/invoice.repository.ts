@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { z } from 'zod';
 import { prisma } from './../../db/client';
 import { Invoice } from './invoice.schema';
@@ -5,8 +6,8 @@ import { Invoice } from './invoice.schema';
 class InvoiceRepository {
   constructor() {}
 
-  getAll(id: string) {
-    return prisma.invoice.findMany({ where: { id } });
+  getAll(id: string, options?: Prisma.InvoiceFindManyArgs) {
+    return prisma.invoice.findMany({ where: { userId: id }, ...options });
   }
 
   getById(id: string) {

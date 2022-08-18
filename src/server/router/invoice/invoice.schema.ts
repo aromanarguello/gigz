@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const ItemsSchema = z.array(
+export const ServiceSchema = z.array(
   z.object({
     title: z.string(),
     amount: z.number(),
@@ -26,7 +26,7 @@ export const InvoiceSchema = z.object({
   gigId: z.string(),
   sentAt: z.date().optional(),
   amount: z.number(),
-  items: ItemsSchema,
+  services: ServiceSchema,
   expenses: ExpensesSchema,
 });
 

@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { InvoiceSchema, ItemsSchema } from '../../server/router/invoice/invoice.schema';
+import { InvoiceSchema, ServiceSchema } from '../../server/router/invoice/invoice.schema';
 
 import { trpc } from '../../utils/trpc';
 import BaseInput from '../inputs/baseInput';
@@ -14,7 +14,7 @@ interface CreateInvoiceFormProps {
 }
 
 type FormData = z.infer<typeof InvoiceSchema>;
-type ItemsType = z.infer<typeof ItemsSchema>;
+type ItemsType = z.infer<typeof ServiceSchema>;
 
 const CreateInvoiceForm = (props: CreateInvoiceFormProps) => {
   const [items, setItems] = useState<ItemsType>([]);
@@ -38,7 +38,7 @@ const CreateInvoiceForm = (props: CreateInvoiceFormProps) => {
   };
 
   return (
-    <>
+    <div className="w-[400px] h-[400px] bg-gray-100 rounded-lg shadow-md">
       <form onSubmit={handleSubmit(onSubmit)}>
         <BaseInput labelTitle="Service title" placeHolder="Code home page" inputName="title" register={register} />
         <BaseInput
@@ -48,7 +48,7 @@ const CreateInvoiceForm = (props: CreateInvoiceFormProps) => {
           register={register}
         />
       </form>
-    </>
+    </div>
   );
 };
 

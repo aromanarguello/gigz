@@ -11,7 +11,7 @@ import {
 import { GigTasks } from '@prisma/client';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
-import { toHHMMSS } from '../../utils/helpers';
+import { formatDate, toHHMMSS } from '../../utils/helpers';
 
 import { trpc } from '../../utils/trpc';
 import Timer from '../timer/timer';
@@ -96,9 +96,7 @@ const TaskList = ({ gigId, isDeleteMode }: TaskCardProps) => {
             <p className="text-gray-400 font-bold text-xs">End date</p>
             <div className="flex">
               <ClockIcon className="w-6 h-6 mr-2 text-gray-400" />
-              <p className="font-semibold text-gray-500">
-                {task.deadline ? dayjs(task.deadline).format('MMM DD, YYYY') : '--'}
-              </p>
+              <p className="font-semibold text-gray-500">{task.deadline ? formatDate(task.deadline) : '--'}</p>
             </div>
           </div>
           <div>

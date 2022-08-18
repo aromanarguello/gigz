@@ -1,11 +1,12 @@
+import { Prisma } from '@prisma/client';
 import invoiceRepository from './invoice.repository';
 import { Invoice } from './invoice.schema';
 
 class InvoiceService {
   constructor() {}
 
-  async getAll(id: string) {
-    return await invoiceRepository.getAll(id);
+  async getAll(userId: string, options?: Prisma.InvoiceFindManyArgs) {
+    return await invoiceRepository.getAll(userId, options);
   }
 
   async getById(id: string) {

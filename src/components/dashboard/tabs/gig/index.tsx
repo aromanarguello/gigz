@@ -39,7 +39,7 @@ export const GigTab = () => {
   return (
     <>
       <div className="w-full grid md:grid-cols-3 items-center">
-        <div className="border h-10 my-2 flex items-center justify-between">
+        <div className="h-10 my-2 flex items-center justify-between">
           <p className="text-l font-bold text-gray-500 ml-10">You have {data?.length} gigs</p>
           <div className="bg-white rounded-3xl mr-2 h-10 w-24 flex flex-row justify-around items-center text-gray-400 p-2">
             <ViewGridIcon className="w-6 h-6" />
@@ -68,17 +68,17 @@ export const GigTab = () => {
           </ul>
         </div>
       </div>
-      <div className="border border-gray-300" />
-      <div className="h-[800px] overflow-y-auto mt-4">
-        <div className=" w-full flex flex-wrap overflow-y-auto justify-center">
+      <div className="border border-gray-200" />
+      <div className="h-[800px] overflow-y-auto">
+        <div className=" w-full flex flex-wrap overflow-y-auto justify-center ">
           {gigs?.map((gig) => (
             <div
               key={gig.id}
-              className="m-4 max-w-sm rounded-lg bg-gray-100 overflow-hidden shadow-lg w-72 h-72 grid grid-rows-[1.5fr_2fr]"
+              className="m-4 max-w-sm rounded-lg bg-transparent overflow-hidden border-2 border-gray-300 w-64 h-64 grid grid-rows-[1.5fr_2fr]"
             >
               <div className="grid grid-cols-[1.2fr_2fr] border border-b-gray-300">
-                <div className="w-28 border flex justify-center text-gray-100 border-r-gray-300">
-                  {gig.logo ? <Image src={gig.logo} alt={gig.title} width={112} height={100} /> : null}
+                <div className="w-22 border flex justify-center text-gray-100 border-r-gray-300">
+                  {gig.logo ? <Image src={gig.logo} alt={gig.title} width={100} height={82} /> : null}
                 </div>
                 <div className="flex items-start p-4 border-r-gray-300 flex-col justify-center">
                   <p className="text-gray-600 font-semibold">{gig.title || 'Untitled'}</p>

@@ -48,7 +48,7 @@ export const SidePanel = ({ user }: SidePanelProps) => {
   };
 
   return (
-    <div className=" md:w-1/6 self-center sm:w-1/5 m-4 flex-col flex items-center p-4">
+    <div className=" md:w-1/6 self-center sm:w-1/5 m-4 flex-col flex items-center justify-start p-4">
       {user?.image ? (
         <div className="rounded-full border-2 border-blue-400 flex">
           <Image src={user.image} alt="logo" width="112px" height="112px" className="rounded-full  mb-8 mt-4" />
